@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)$ index.php [QSA,L]
+php_value session.auto_start 1
+ErrorDocument 403 /views/error/404page.php
+ErrorDocument 404 /views/error/404page.php
+ErrorDocument 405 /views/error/404page.php
