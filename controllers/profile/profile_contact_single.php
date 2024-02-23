@@ -5,6 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 /**/
 
 /*Variables*/
+$logged = new User();
 if (isset($_GET['id']) && ctype_digit($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -31,8 +32,10 @@ $loginValidate->securityCheck();
 <div class="card-header border-0 bg-light-second rounded-top p-3">
     <div class="row px-4 align-items-center justify-content-between">
         <div>Contactgegevens</div>
-        <a class="btn btn-info rounded text-white btn-sm trigger_profile"
-           id="">Bewerken</a>
+        <?php if ($logged->data['role'] == 1 || $userValidation->data['id'] == $_GET['id']) { ?>
+            <a class="btn btn-info rounded text-white btn-sm trigger_profile"
+               id="">Bewerken</a>
+        <?php } ?>
     </div>
 </div>
 <div class="container-fluid p-4 rounded-bottom rounded-top">

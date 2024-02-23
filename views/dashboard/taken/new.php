@@ -22,7 +22,6 @@ $user = new User();
 $activity = new Activity();
 
 
-
 $users = new Users();
 
 $usertheme = new User();
@@ -86,13 +85,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
                                                     foreach ($users->findAll() as $single_user) {
                                                         if ($_GET['id'] == $single_user['id']) {
                                                             ?>
-                                                            <option selected value="<?php echo $single_user['id']; ?>"><?php echo $single_user['name']; ?></option>
+                                                            <option selected
+                                                                    value="<?php echo $single_user['id']; ?>"><?php echo $single_user['name']; ?></option>
 
                                                             <?php
                                                         } else {
-                                                            ?>
-                                                            <option value="<?php echo $single_user['id']; ?>"><?php echo $single_user['name']; ?></option>
-                                                            <?php
+                                                            if ($single_user['visible'] == 1) {
+                                                                ?>
+                                                                <option value="<?php echo $single_user['id']; ?>"><?php echo $single_user['name']; ?></option>
+                                                                <?php
+                                                            }
                                                         }
                                                     }
                                                     ?>
@@ -134,10 +136,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
                                             <div class="input-group">
 
                                                 <select class="custom-select rounded" id="status" name="status">
-                                                    <option <?php if($activity->getData('status') == '1'){ echo 'selected'; }?> value="1">Open</option>
-                                                    <option <?php if($activity->getData('status') == '2'){ echo 'selected'; }?> value="2">Uitgevoerd</option>
-                                                    <option <?php if($activity->getData('status') == '3'){ echo 'selected'; }?> value="3">In behandeling</option>
-                                                    <option <?php if($activity->getData('status') == '4'){ echo 'selected'; }?> value="4">Wachten op klant</option>
+                                                    <option <?php if ($activity->getData('status') == '1') {
+                                                        echo 'selected';
+                                                    } ?> value="1">Open
+                                                    </option>
+                                                    <option <?php if ($activity->getData('status') == '2') {
+                                                        echo 'selected';
+                                                    } ?> value="2">Uitgevoerd
+                                                    </option>
+                                                    <option <?php if ($activity->getData('status') == '3') {
+                                                        echo 'selected';
+                                                    } ?> value="3">In behandeling
+                                                    </option>
+                                                    <option <?php if ($activity->getData('status') == '4') {
+                                                        echo 'selected';
+                                                    } ?> value="4">Wachten op klant
+                                                    </option>
                                                 </select>
                                             </div>
                                         </li>
@@ -145,49 +159,80 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
                                             <label>Gefactureerd</label>
                                             <div class="input-group">
 
-                                                <select class="custom-select rounded" id="facturering" name="facturering">
-                                                    <option <?php if($activity->getData('facturering') == '1'){ echo 'selected'; }?> value="1">Nee</option>
-                                                    <option <?php if($activity->getData('facturering') == '2'){ echo 'selected'; }?> value="2">Ja</option>
-                                                    <option <?php if($activity->getData('facturering') == '3'){ echo 'selected'; }?> value="3">Service / Garantie</option>
-                                                    <option <?php if($activity->getData('facturering') == '4'){ echo 'selected'; }?> value="4">Eigen gebruik</option>
-                                                    <option <?php if($activity->getData('facturering') == '5'){ echo 'selected'; }?> value="5">Contract</option>
+                                                <select class="custom-select rounded" id="facturering"
+                                                        name="facturering">
+                                                    <option <?php if ($activity->getData('facturering') == '1') {
+                                                        echo 'selected';
+                                                    } ?> value="1">Nee
+                                                    </option>
+                                                    <option <?php if ($activity->getData('facturering') == '2') {
+                                                        echo 'selected';
+                                                    } ?> value="2">Ja
+                                                    </option>
+                                                    <option <?php if ($activity->getData('facturering') == '3') {
+                                                        echo 'selected';
+                                                    } ?> value="3">Service / Garantie
+                                                    </option>
+                                                    <option <?php if ($activity->getData('facturering') == '4') {
+                                                        echo 'selected';
+                                                    } ?> value="4">Eigen gebruik
+                                                    </option>
+                                                    <option <?php if ($activity->getData('facturering') == '5') {
+                                                        echo 'selected';
+                                                    } ?> value="5">Contract
+                                                    </option>
                                                 </select>
                                             </div>
                                         </li>
                                         <li class="list-group-item p-0 py-2 dateli">
                                             <label>Datum</label>
                                             <div class="input-group date" id="date" data-target-input="nearest">
-                                                <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="fad fa-calendar-alt pl-1"></i></div>
+                                                <div class="input-group-append" data-target="#date"
+                                                     data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i
+                                                                class="fad fa-calendar-alt pl-1"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control datetimepicker-input" data-target="#date" placeholder="Kies een datum en tijd" value="<?php echo $activity->getData('date'); ?>"/>
+                                                <input type="text" class="form-control datetimepicker-input"
+                                                       data-target="#date" placeholder="Kies een datum en tijd"
+                                                       value="<?php echo $activity->getData('date'); ?>"/>
                                             </div>
                                         </li>
                                         <li class="list-group-item p-0 py-2">
                                             <label>Van</label>
                                             <div class="input-group date" id="from_time" data-target-input="nearest">
-                                                <div class="input-group-append" data-target="#from_time" data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="fad fa-business-time  pl-1"></i></div>
+                                                <div class="input-group-append" data-target="#from_time"
+                                                     data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i
+                                                                class="fad fa-business-time  pl-1"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control datetimepicker-input" data-target="#from_time" placeholder="Kies een datum en tijd" value="<?php echo $activity->getData('time_from'); ?>"/>
+                                                <input type="text" class="form-control datetimepicker-input"
+                                                       data-target="#from_time" placeholder="Kies een datum en tijd"
+                                                       value="<?php echo $activity->getData('time_from'); ?>"/>
                                             </div>
                                         </li>
                                         <li class="list-group-item p-0 py-2">
                                             <label>Tot</label>
                                             <div class="input-group date" id="to_time" data-target-input="nearest">
-                                                <div class="input-group-append" data-target="#to_time" data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="fad fa-business-time  pl-1"></i></div>
+                                                <div class="input-group-append" data-target="#to_time"
+                                                     data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i
+                                                                class="fad fa-business-time  pl-1"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control datetimepicker-input" data-target="#to_time" placeholder="Kies een datum en tijd" value="<?php echo $activity->getData('time_to'); ?>"/>
+                                                <input type="text" class="form-control datetimepicker-input"
+                                                       data-target="#to_time" placeholder="Kies een datum en tijd"
+                                                       value="<?php echo $activity->getData('time_to'); ?>"/>
                                             </div>
                                         </li>
                                         <li class="list-group-item p-0 py-2">
                                             <label>Reistijd</label>
-                                            <div class="input-group date" >
+                                            <div class="input-group date">
                                                 <div class="input-group-append">
-                                                    <div class="input-group-text"><i class="fad fa-clock pl-1"></i></div>
+                                                    <div class="input-group-text"><i class="fad fa-clock pl-1"></i>
+                                                    </div>
                                                 </div>
-                                                <input type="number" class="form-control" placeholder="Vul het aantal minuten in" id="traveltime" value="<?php echo $activity->getData('time_to'); ?>"/>
+                                                <input type="number" class="form-control"
+                                                       placeholder="Vul het aantal minuten in" id="traveltime"
+                                                       value="<?php echo $activity->getData('time_to'); ?>"/>
                                             </div>
                                         </li>
                                     </ul>
@@ -207,7 +252,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
         </div>
     </div>
 </div>
-<div class="bottom_notes">Profi-crm versie <?php $versions = new Versions(); echo $versions->findLatest()[0]['version']; ?>
+<div class="bottom_notes">Profi-crm versie <?php $versions = new Versions();
+    echo $versions->findLatest()[0]['version']; ?>
     | <?php echo strftime("%e %B %Y", strtotime($versions->findLatest()[0]['date'])); ?>
     <a href="/change-log">Wat is er nieuw?</a></div>
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/footer.php'; ?>
@@ -216,24 +262,24 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
     $(document).ready(function () {
         var url = new URL(window.location.href);
         var resultDropdown = $('.relation_search_box');
-       if(url.searchParams.get('relation')){
-           var relation = url.searchParams.get('relation');
-           $.get("/controllers/search/contact_relation_search.php", {term: relation}).done(function (data) {
-               // Display the returned data in browser
-               resultDropdown.html(data);
-               var relation_id = $('.relation_search_box').find('.search_item').attr('relationid');
-               var relation_type = $('.relation_search_box').find('.search_item').attr('relationtype');
-               var text = $('.relation_search_box').find('.relation_item_text').html();
-               $('.relation_search').val(text);
-               $('#relation_id').val(relation_id);
-               $('#relation_type').val(relation_type);
-           });
+        if (url.searchParams.get('relation')) {
+            var relation = url.searchParams.get('relation');
+            $.get("/controllers/search/contact_relation_search.php", {term: relation}).done(function (data) {
+                // Display the returned data in browser
+                resultDropdown.html(data);
+                var relation_id = $('.relation_search_box').find('.search_item').attr('relationid');
+                var relation_type = $('.relation_search_box').find('.search_item').attr('relationtype');
+                var text = $('.relation_search_box').find('.relation_item_text').html();
+                $('.relation_search').val(text);
+                $('#relation_id').val(relation_id);
+                $('#relation_type').val(relation_type);
+            });
 
-       }
+        }
     });
     $(function () {
         $('#date').datetimepicker({
-            locale:'nl',
+            locale: 'nl',
             icons: {
                 time: "fad fa-clock",
                 date: "fad fa-calendar",
@@ -252,7 +298,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
 
         $('.dateli .datetimepicker-input').val(today);
         $('#from_time').datetimepicker({
-            locale:'nl',
+            locale: 'nl',
             icons: {
                 time: "fad fa-clock",
                 date: "fad fa-calendar",
@@ -263,7 +309,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
         });
 
         $('#to_time').datetimepicker({
-            locale:'nl',
+            locale: 'nl',
             icons: {
                 time: "fad fa-clock",
                 date: "fad fa-calendar",
@@ -331,22 +377,23 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
             theme: 'silver'
         },
         menubar: false,
-        relative_urls : true,
+        relative_urls: true,
         forced_root_block: "",
         paste_data_images: true,
-        invalid_elements : "script,img,iframe",
+        invalid_elements: "script,img,iframe",
         toolbar: " redo | undo | bold | italic | link | unlink",
         default_link_target: "_blank"
     });
 
+
     let loading = false;
     tinymce.triggerSave();
-        $('form').submit(function (event) {
-            if(loading){
-                return;
-            }
-            loading = true;
-            $('#save_data').text('Laden...');
+    $('form').submit(function (event) {
+        if (loading) {
+            return;
+        }
+        loading = true;
+        $('#save_data').text('Laden...');
         event.preventDefault();
 
         if ($('.relation_search').val() !== '') {
@@ -375,7 +422,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
             $('#userid').addClass('is-valid');
         }
 
-        if(!$('.relation_search').val()) {
+        if (!$('.relation_search').val()) {
             $('#relation_id').val('');
             $('#relation_type').val('');
             $('.relation_search').addClass('is-invalid');
@@ -421,7 +468,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
                     });
                 }
             },
-            complete: function(data) {
+            complete: function (data) {
                 loading = false;
                 $('#save_data').text('Opslaan');
             }
@@ -431,6 +478,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/header.php';
             var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
             return pattern.test(emailAddress);
         };
+    });
+
+    // if ctrl + s is pressed
+    $(document).keydown(function (e) {
+        if ((e.ctrlKey && e.key === 's')) {
+            e.preventDefault();
+            $("#save_data").click();
+            return false;
+        }
+
+        return true;
     });
 </script>
 <script src="/assets/js/dashboard/main.js"></script>

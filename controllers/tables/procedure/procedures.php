@@ -39,6 +39,6 @@ foreach($procedures->findAll($table->startfrom,$table->limit) as $procedure) {
 
 <script>
     $('tbody tr').on('click',function () {
-       window.location.href = '/procedure?id='+$(this).attr('id');
+        window.location.href = '/procedure?id='+$(this).attr('id');
     });
 </script>
